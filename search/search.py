@@ -127,8 +127,8 @@ def uniformCostSearch(problem):
 	"""Search the node of least total cost first."""
 	"*** YOUR CODE HERE ***"
 	" Priority Queue! "
-	node = (problem.getStartState(), [], 0)
 	cost = 0
+	node = (problem.getStartState(), [], cost)
 	ucsFrontier = util.PriorityQueue()
 	ucsFrontier.push(node, cost)
 	explored = []
@@ -143,13 +143,10 @@ def uniformCostSearch(problem):
 				totalAction = list(currentActions)
 				totalAction.append(successorAction)
 				totalCost = currentCost + successorCost
-				successorState = (successorState, totalAction, totalCost)
+				n = (successorState, totalAction, totalCost)
 				if successorState not in explored:
-					ucsFrontier.push(successorState, totalCost)
+					ucsFrontier.push(n, totalCost)
 		
-	
-	
-
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
