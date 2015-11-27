@@ -124,10 +124,31 @@ def breadthFirstSearch(problem):
     return genericGraphSearch(problem, bfsQueue)
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    " Priority Queue? "
-    util.raiseNotDefined()
+	"""Search the node of least total cost first."""
+	"*** YOUR CODE HERE ***"
+	" Priority Queue! "
+	node = (problem.getStartState(), [], 0)
+	cost = 0
+	ucsFrontier = util.PriorityQueue()
+	ucsFrontier.push(node, cost)
+	explored = []
+	
+	while not ucsFrontier.isEmpty():
+		currentState, currentActions, currentCost = ucsFrontier.pop()
+		if problem.isGoalState(currentState):
+			return currentActions
+		explored.append(currentState)
+		for successorState, successorAction, successorCost in problem.getSuccessors(currentState):
+				" creates a copy of the currentActions list "
+				totalAction = list(currentActions)
+				totalAction.append(successorAction)
+				totalCost = currentCost + successorCost
+				successorState = (successorState, totalAction, totalCost)
+				if successorState not in explored:
+					ucsFrontier.push(successorState, totalCost)
+		
+	
+	
 
 def nullHeuristic(state, problem=None):
     """
