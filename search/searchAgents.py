@@ -295,6 +295,7 @@ class CornersProblem(search.SearchProblem):
 		space)
 		"""
 		"*** YOUR CODE HERE ***"
+		"return the current position and a list signifying which corners have been visited"
 		return (self.startingPosition, [False, False, False, False])
 
     def isGoalState(self, state):
@@ -302,9 +303,11 @@ class CornersProblem(search.SearchProblem):
 		Returns whether this search state is a goal state of the problem.
 		"""
 		"*** YOUR CODE HERE ***"
+		"If all corners have been visited goal has been reached"
 		if state[1] == [True, True, True, True]:
 			return True
 		
+		"In any other case goal has not been found"
 		return False
 
     def getSuccessors(self, state):
@@ -328,13 +331,19 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
 			"*** YOUR CODE HERE ***"
+			"Retrieve agent position"
 			x, y = state[0]
+			"Find next state coordinates"
 			dx, dy = Actions.directionToVector(action)
 			nextx, nexty = int(x + dx), int(y + dy)
+			"Import the list of visited corners"
 			visited = list(state[1])
+			"If the next state is a valid move"
 			if not self.walls[nextx][nexty]:
 				nextState = (nextx, nexty)
+				"Set action cost to 1"
 				cost = 1
+				"If the next state is one of the corners change its value in visited"
 				if nextState == self.corners[0]:
 					visited[0] = True
 				if nextState == self.corners[1]:
@@ -343,7 +352,7 @@ class CornersProblem(search.SearchProblem):
 					visited[2] = True
 				if nextState == self.corners[3]:
 					visited[3] = True
-				print str(visited)
+				"Add the new state to the successors list"
 				successors.append( ( (nextState, visited), action, cost) )
 			
 
@@ -381,10 +390,14 @@ def cornersHeuristic(state, problem):
 	walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
 	"*** YOUR CODE HERE ***"
+	"Retrieve agent position"
 	x, y = state[0]
+	"Retrieve which corners have been visited"
 	visitedCorners = state[1]
+	"Set sum of all euclidean distances to 0"
 	sum = 0
 	
+	"If the corner has yet to be visited add euclidean distance to the sum"
 	if not visitedCorners[0]:
 		sum += (abs(corners[0][0] - x) ** 2 + abs(corners[0][1] - y) ** 2) ** 0.5
 	
@@ -396,8 +409,8 @@ def cornersHeuristic(state, problem):
 		
 	if not visitedCorners[3]:
 		sum += (abs(corners[3][0] - x) ** 2 + abs(corners[3][1] - y) ** 2) ** 0.5
-	print str(sum)
 	
+	"Return the sum as heuristic value"
 	return sum
 		
 
