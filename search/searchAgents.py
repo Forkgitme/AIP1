@@ -274,35 +274,38 @@ class CornersProblem(search.SearchProblem):
     """
 
     def __init__(self, startingGameState):
-        """
-        Stores the walls, pacman's starting position and corners.
-        """
-        self.walls = startingGameState.getWalls()
-        self.startingPosition = startingGameState.getPacmanPosition()
-        top, right = self.walls.height-2, self.walls.width-2
-        self.corners = ((1,1), (1,top), (right, 1), (right, top))
-        for corner in self.corners:
-            if not startingGameState.hasFood(*corner):
-                print 'Warning: no food in corner ' + str(corner)
-        self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
+		"""
+		Stores the walls, pacman's starting position and corners.
+		"""
+		self.walls = startingGameState.getWalls()
+		self.startingPosition = startingGameState.getPacmanPosition()
+		top, right = self.walls.height-2, self.walls.width-2
+		self.corners = ((1,1), (1,top), (right, 1), (right, top))
+		for corner in self.corners:
+			if not startingGameState.hasFood(*corner):
+				print 'Warning: no food in corner ' + str(corner)
+		self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
-        "*** YOUR CODE HERE ***"
+		"*** YOUR CODE HERE ***"
 
     def getStartState(self):
-        """
-        Returns the start state (in your state space, not the full Pacman state
-        space)
-        """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+		"""
+		Returns the start state (in your state space, not the full Pacman state
+		space)
+		"""
+		"*** YOUR CODE HERE ***"
+		return (self.startingPosition, [False, False, False, False])
 
     def isGoalState(self, state):
-        """
-        Returns whether this search state is a goal state of the problem.
-        """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+		"""
+		Returns whether this search state is a goal state of the problem.
+		"""
+		"*** YOUR CODE HERE ***"
+		if state[1] == [True, True, True, True]:
+			return True
+		
+		return False
 
     def getSuccessors(self, state):
         """
@@ -324,7 +327,25 @@ class CornersProblem(search.SearchProblem):
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
 
-            "*** YOUR CODE HERE ***"
+			"*** YOUR CODE HERE ***"
+			x, y = state[0]
+			dx, dy = Actions.directionToVector(action)
+			nextx, nexty = int(x + dx), int(y + dy)
+			visited = list(state[1])
+			if not self.walls[nextx][nexty]:
+				nextState = (nextx, nexty)
+				cost = 1
+				if nextState == self.corners[0]:
+					visited[0] = True
+				if nextState == self.corners[1]:
+					visited[1] = True
+				if nextState == self.corners[2]:
+					visited[2] = True
+				if nextState == self.corners[3]:
+					visited[3] = True
+				print str(visited)
+				successors.append( ( (nextState, visited), action, cost) )
+			
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -344,23 +365,41 @@ class CornersProblem(search.SearchProblem):
 
 
 def cornersHeuristic(state, problem):
-    """
-    A heuristic for the CornersProblem that you defined.
+	"""
+	A heuristic for the CornersProblem that you defined.
 
-      state:   The current search state
-               (a data structure you chose in your search problem)
+	state:   The current search state
+			(a data structure you chose in your search problem)
 
-      problem: The CornersProblem instance for this layout.
+	problem: The CornersProblem instance for this layout.
 
-    This function should always return a number that is a lower bound on the
-    shortest path from the state to a goal of the problem; i.e.  it should be
-    admissible (as well as consistent).
-    """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+	This function should always return a number that is a lower bound on the
+	shortest path from the state to a goal of the problem; i.e.  it should be
+	admissible (as well as consistent).
+	"""
+	corners = problem.corners # These are the corner coordinates
+	walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+	"*** YOUR CODE HERE ***"
+	x, y = state[0]
+	visitedCorners = state[1]
+	sum = 0
+	
+	if not visitedCorners[0]:
+		sum += (abs(corners[0][0] - x) ** 2 + abs(corners[0][1] - y) ** 2) ** 0.5
+	
+	if not visitedCorners[1]:
+		sum += (abs(corners[1][0] - x) ** 2 + abs(corners[1][1] - y) ** 2) ** 0.5
+	
+	if not visitedCorners[2]:
+		sum += (abs(corners[2][0] - x) ** 2 + abs(corners[2][1] - y) ** 2) ** 0.5
+		
+	if not visitedCorners[3]:
+		sum += (abs(corners[3][0] - x) ** 2 + abs(corners[3][1] - y) ** 2) ** 0.5
+	print str(sum)
+	
+	return sum
+		
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"

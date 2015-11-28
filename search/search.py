@@ -140,7 +140,7 @@ def uniformCostSearch(problem):
 	"While the optimal path is not yet found"
 	while not openNodes.isEmpty():
 		"Retrieve the node that looks most promising"
-		currentState, currentActions, currentCost = openNodes.pop
+		currentState, currentActions, currentCost = openNodes.pop()
 		"If returned node is our goal we are finished"
 		if problem.isGoalState(currentState):
 			return currentActions
