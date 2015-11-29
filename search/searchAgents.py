@@ -394,24 +394,33 @@ def cornersHeuristic(state, problem):
 	x, y = state[0]
 	"Retrieve which corners have been visited"
 	visitedCorners = state[1]
-	"Set sum of all euclidean distances to 0"
-	sum = 0
+	"set distances to high value"
+	distances = [999999, 999999, 999999, 999999]
+	allVisited = True
 	
-	"If the corner has yet to be visited add euclidean distance to the sum"
+	"If the corner has not yet been visited calculate manhattan distance"
 	if not visitedCorners[0]:
-		sum += (abs(corners[0][0] - x) ** 2 + abs(corners[0][1] - y) ** 2) ** 0.5
+		distances[0] = (abs(corners[0][0] - x) + abs(corners[0][1] - y))
+		allVisited = False
 	
 	if not visitedCorners[1]:
-		sum += (abs(corners[1][0] - x) ** 2 + abs(corners[1][1] - y) ** 2) ** 0.5
+		distances[1] = (abs(corners[1][0] - x) + abs(corners[1][1] - y))
+		allVisited = False
 	
 	if not visitedCorners[2]:
-		sum += (abs(corners[2][0] - x) ** 2 + abs(corners[2][1] - y) ** 2) ** 0.5
+		distances[2] = (abs(corners[2][0] - x) + abs(corners[2][1] - y))
+		allVisited = False
 		
 	if not visitedCorners[3]:
-		sum += (abs(corners[3][0] - x) ** 2 + abs(corners[3][1] - y) ** 2) ** 0.5
+		distances[3] = (abs(corners[3][0] - x) + abs(corners[3][1] - y))
+		allVisited = False
 	
-	"Return the sum as heuristic value"
-	return sum
+	"If every corner has been visited return 0"
+	if allVisited:
+		return 0
+	
+	"Return the distance to the closest unexlpored corner"
+	return min(distances)
 		
 
 class AStarCornersAgent(SearchAgent):
@@ -506,6 +515,11 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+	x, y = position
+	sum = 0
+	
+	for f in foodGrid.asList():
+		
     return 0
 
 class ClosestDotSearchAgent(SearchAgent):
