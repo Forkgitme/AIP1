@@ -421,49 +421,49 @@ def cornersHeuristic(state, problem):
 	
 	"Return the distance to the closest unexlpored corner"
 	return min(distances)
-    """
-    "Retrieve agent position"
-    x, y = state[0]
-    "Retrieve which corners have been visited"
-    visitedCorners = state[1]
-    "set distances to high value"
-    distances = [999999, 999999, 999999, 999999]
-    allVisited = True
-    cIndex, minDist, extraDist = 30, 0, 0
+	"""
+	"Retrieve agent position"
+	x, y = state[0]
+	"Retrieve which corners have been visited"
+	visitedCorners = state[1]
+	"set distances to high value"
+	distances = [999999, 999999, 999999, 999999]
+	allVisited = True
+	cIndex, minDist, extraDist = 30, 0, 0
     
-    "If the corner has not yet been visited calculate manhattan distance"
-    if not visitedCorners[0]:
-        distances[0] = (abs(corners[0][0] - x) + abs(corners[0][1] - y))
-        allVisited = False
+	"If the corner has not yet been visited calculate manhattan distance"
+	if not visitedCorners[0]:
+		distances[0] = (abs(corners[0][0] - x) + abs(corners[0][1] - y))
+		allVisited = False
 	
-    if not visitedCorners[1]:
-        distances[1] = (abs(corners[1][0] - x) + abs(corners[1][1] - y))
-        allVisited = False
+	if not visitedCorners[1]:
+		distances[1] = (abs(corners[1][0] - x) + abs(corners[1][1] - y))
+		allVisited = False
 	
-    if not visitedCorners[2]:
-        distances[2] = (abs(corners[2][0] - x) + abs(corners[2][1] - y))
-        allVisited = False
+	if not visitedCorners[2]:
+		distances[2] = (abs(corners[2][0] - x) + abs(corners[2][1] - y))
+		allVisited = False
         
-    if not visitedCorners[3]:
-        distances[3] = (abs(corners[3][0] - x) + abs(corners[3][1] - y))
-        allVisited = False
+	if not visitedCorners[3]:
+		distances[3] = (abs(corners[3][0] - x) + abs(corners[3][1] - y))
+		allVisited = False
         
-    "If every corner has been visited return 0"
-    if not allVisited:
-        minDist = min(distances)
-        cIndex = distances.index(minDist)
+	"If every corner has been visited return 0"
+	if not allVisited:
+		minDist = min(distances)
+		cIndex = distances.index(minDist)
 
-        ax, ay = corners[cIndex]
-        for c in corners:
-            if not c == corner.index(corners[cIndex]) and not visitedCorners[corners.index(c)]:
-                cx, cy = c
-                extraDist += abs(cx - ax) + abs(cy - ay)
+		ax, ay = corners[cIndex]
+		for c in corners:
+			if not c == corner.index(corners[cIndex]) and not visitedCorners[corners.index(c)]:
+				cx, cy = c
+				extraDist += abs(cx - ax) + abs(cy - ay)
         
     
-    "Return the distance to the closest unexplored corner"
-    
-    return minDist + extraDist
-    """
+	"Return the distance to the closest unexplored corner"
+	
+	return minDist + extraDist
+	"""
 		
 
 class AStarCornersAgent(SearchAgent):
