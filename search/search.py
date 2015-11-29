@@ -124,39 +124,38 @@ def breadthFirstSearch(problem):
     return genericGraphSearch(problem, bfsQueue)
 
 def uniformCostSearch(problem):
-	"""Search the node of least total cost first."""
-	"*** YOUR CODE HERE ***"
-	" Priority Queue! "
-	"Set initial cost to 0"
-	cost = 0
-	"Define starting node of the problem"
-	node = (problem.getStartState(), [], cost)
-	"Define prority queue"
-	openNodes = util.PriorityQueue()
-	openNodes.push(node, cost)
-	"Define list to hold already evaluated nodes"
-	closedNodes = []
-	
-	"While the optimal path is not yet found"
-	while not openNodes.isEmpty():
-		"Retrieve the node that looks most promising"
-		currentState, currentActions, currentCost = openNodes.pop()
-		"If returned node is our goal we are finished"
-		if problem.isGoalState(currentState):
-			return currentActions
-		"Add node to evaluated nodes"
-		closedNodes.append(currentState)
-		for successorState, successorAction, successorCost in problem.getSuccessors(currentState):
-				"Creates a copy of the currentActions list "
-				totalAction = list(currentActions)
-				totalAction.append(successorAction)
-				"Calculate new cost"
-				totalCost = currentCost + successorCost
-				"Make a node with updated information"
-				n = (successorState, totalAction, totalCost)
-				"If the node was not yet evaluated add the node to the queue"
-				if successorState not in closedNodes:
-					openNodes.push(n, totalCost)
+    """Search the node of least total cost first."""
+    "*** YOUR CODE HERE ***"
+    " Priority Queue! "
+    "Set initial cost to 0"
+    cost = 0
+    "Define starting node of the problem"
+    node = (problem.getStartState(), [], cost)
+    "Define prority queue"
+    openNodes = util.PriorityQueue()
+    openNodes.push(node, cost)
+    "Define list to hold already evaluated nodes"
+    closedNodes = []
+    "While the optimal path is not yet found"
+    while not openNodes.isEmpty():
+        "Retrieve the node that looks most promising"
+        currentState, currentActions, currentCost = openNodes.pop()
+        "If returned node is our goal we are finished"
+        if problem.isGoalState(currentState):
+            return currentActions
+        if currentState not in closedNodes:
+            "Add node to evaluated nodes"
+            closedNodes.append(currentState)
+            for successorState, successorAction, successorCost in problem.getSuccessors(currentState):
+                "Creates a copy of the currentActions list "
+                totalAction = list(currentActions)
+                totalAction.append(successorAction)
+                "Calculate new cost"
+                totalCost = currentCost + successorCost
+                "Make a node with updated information"
+                n = (successorState, totalAction, totalCost)
+                "If the node was not yet evaluated add the node to the queue"
+                openNodes.push(n, totalCost)
 		
 def nullHeuristic(state, problem=None):
     """
@@ -166,42 +165,39 @@ def nullHeuristic(state, problem=None):
     return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
-	"""Search the node that has the lowest combined cost and heuristic first."""
-	"*** YOUR CODE HERE ***"
-	"Determine the heuristic of the start node"
-	cost = heuristic(problem.getStartState(), problem)
-	"Define initial state of the problem"
-	node = (problem.getStartState(), [], 0)
-	"Create priority queue to determine the node to expand next"
-	openNodes = util.PriorityQueue()
-	openNodes.push(node, cost)
-	"Make a list to track which nodes are already evaluated to prevent infinite looping"
-	closedNodes = []
-	
-	"While shortest path is not yet found continue searching"
-	while not openNodes.isEmpty():
-		"Retrieve the node that is most promising from the open nodes"
-		currentState, currentActions, currentCost = openNodes.pop()
-		"If the evaluated state is our goal return the path"
-		if problem.isGoalState(currentState):
-			return currentActions
-		"Mark node as evaluated"
-		closedNodes.append(currentState)
-		"Evaluate each of the child nodes"
-		for successorState, successorAction, successorCost in problem.getSuccessors(currentState):
-			"If the node has been expanded before don't evaluate"
-			if successorState in closedNodes:
-				continue
-			"Count all actions to reach this state"
-			totalAction = list(currentActions)
-			totalAction.append(successorAction)
-			"Evaluate the cost until now and add heuristics"
-			g_cost = currentCost + successorCost
-			totalCost = g_cost + heuristic(successorState, problem)
-			"Define a node contaning the new information"
-			n = (successorState, totalAction, g_cost)
-			"Add node to be evaluated"
-			openNodes.push(n, totalCost)
+    """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+    "Determine the heuristic of the start node"
+    cost = heuristic(problem.getStartState(), problem)
+    "Define initial state of the problem"
+    node = (problem.getStartState(), [], 0)
+    "Create priority queue to determine the node to expand next"
+    openNodes = util.PriorityQueue()
+    openNodes.push(node, cost)
+    "Make a list to track which nodes are already evaluated to prevent infinite looping"
+    closedNodes = []
+    "While shortest path is not yet found continue searching"
+    while not openNodes.isEmpty():
+        "Retrieve the node that is most promising from the open nodes"
+        currentState, currentActions, currentCost = openNodes.pop()
+        "If the evaluated state is our goal return the path"
+        if problem.isGoalState(currentState):
+            return currentActions
+        "Mark node as evaluated"
+        if currentState not in closedNodes:
+            closedNodes.append(currentState)
+            "Evaluate each of the child nodes"
+            for successorState, successorAction, successorCost in problem.getSuccessors(currentState):
+                "Count all actions to reach this state"
+                totalAction = list(currentActions)
+                totalAction.append(successorAction)
+                "Evaluate the cost until now and add heuristics"
+                g_cost = currentCost + successorCost
+                totalCost = g_cost + heuristic(successorState, problem)
+                "Define a node contaning the new information"
+                n = (successorState, totalAction, g_cost)
+                "Add node to be evaluated"
+                openNodes.push(n, totalCost)
 
 
 # Abbreviations
