@@ -573,6 +573,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 		x,y = state
 		
 		"*** YOUR CODE HERE ***"
+		"Check wether the position is one of the food items if so return true."
 		for f in self.food.asList():
 			fx, fy = f
 			if fx == x and fy == y:
